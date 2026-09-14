@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Тренажёр польского C1 — частотный курс (14.09.2026–12.03.2027)</title>
+<style>
+:root{--bg:#0b1220;--line:rgba(255,255,255,.10);--tx:#e9eefb;--mut:#a4b2d6;--ac:#6ea8fe;--ok:#9ae6b4;--sh:0 10px 28px rgba(0,0,0,.34)}
+*{box-sizing:border-box}
+body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tx);
+background:radial-gradient(1100px 620px at 8% 0%,rgba(110,168,254,.16),transparent 62%),radial-gradient(860px 560px at 92% 12%,rgba(154,230,180,.10),transparent 60%),var(--bg)}
+header{position:sticky;top:0;z-index:9;backdrop-filter:blur(9px);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.012))}
+.wrap{max-width:1220px;margin:0 auto;padding:14px 18px}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+h1{margin:0;font-size:16px;letter-spacing:.2px}
+.sub{color:var(--mut);font-size:12.5px;font-weight:600;margin-top:3px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{border:1px solid var(--line);background:rgba(255,255,255,.035);padding:7px 11px;border-radius:999px;font-size:12.5px;color:var(--mut);white-space:nowrap}
+.pill b{color:var(--tx)}
+.btn{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--tx);padding:9px 12px;border-radius:11px;cursor:pointer;font:inherit;font-size:12.5px;font-weight:700;transition:.16s}
+.btn:hover{background:rgba(255,255,255,.085)}
+.btn.p{border-color:rgba(110,168,254,.4);background:rgba(110,168,254,.15)}
+.btn.d{border-color:rgba(251,191,36,.36);background:rgba(251,191,36,.12)}
+.btn.g{border-color:rgba(154,230,180,.36);background:rgba(154,230,180,.12)}
+.btn.sm{padding:6px 9px;font-size:12px;border-radius:10px}
+.grid{display:grid;grid-template-columns:330px 1fr;gap:16px;align-items:start}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:var(--sh);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.018))}
+aside{position:sticky;top:88px;max-height:calc(100vh - 108px);display:flex;flex-direction:column}
+@media(max-width:1000px){aside{position:static;max-height:none}}
+.hd{padding:12px 14px;border-bottom:1px solid var(--line);font-size:11.5px;font-weight:800;color:var(--mut);letter-spacing:.4px;text-transform:uppercase}
+.scroll{padding:12px;overflow:auto}
+.daylist{display:flex;flex-direction:column;gap:6px}
+.dbtn{width:100%;text-align:left;border:1px solid var(--line);background:rgba(255,255,255,.022);color:var(--tx);padding:8px 11px;border-radius:12px;cursor:pointer;font:inherit;transition:.16s}
+.dbtn:hover{background:rgba(255,255,255,.06)}
+.dbtn.on{border-color:rgba(110,168,254,.55);background:rgba(110,168,254,.13)}
+.dd{font-weight:800;font-size:12.5px}
+.dm{color:var(--mut);font-size:11.5px;font-weight:600;margin-top:2px}
+.dbtn.ok .dd:after{content:" ✓";color:var(--ok)}
+.main{padding:14px}
+.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+input,select,textarea{font:inherit;color:var(--tx);background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:11px;padding:9px 11px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:rgba(110,168,254,.55);box-shadow:0 0 0 3px rgba(110,168,254,.13)}
+input[type=search]{min-width:190px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--mut);border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer}
+.chip.on{border-color:rgba(110,168,254,.5);background:rgba(110,168,254,.16);color:var(--tx)}
+.jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;padding:11px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.022)}
+.wk{margin:0 0 10px;color:var(--mut);font-size:12px;font-weight:800;letter-spacing:.3px;padding:6px 2px;border-bottom:1px dashed var(--line)}
+.day{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;background:rgba(255,255,255,.02)}
+.day.on{border-color:rgba(110,168,254,.45)}
+.dhead{width:100%;border:0;background:transparent;color:var(--tx);text-align:left;cursor:pointer;padding:12px 13px;display:flex;justify-content:space-between;gap:10px;align-items:center;font:inherit}
+.dhead:hover{background:rgba(255,255,255,.04)}
+.dtitle{font-weight:800;font-size:14px}
+.dsub{color:var(--mut);font-size:12px;font-weight:600;margin-top:3px}
+.tag{border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:11px;color:var(--mut);font-weight:700;white-space:nowrap}
+.body{display:none;padding:0 13px 14px;border-top:1px solid var(--line)}
+.day.on .body{display:block}
+.task{color:var(--mut);font-size:12.5px;font-weight:600;line-height:1.5;margin:11px 0}
+.task b{color:var(--tx)}
+.pl{margin:0;font-size:16px;line-height:1.8;white-space:pre-wrap;word-break:break-word;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.2);padding:13px}
+.acts2{display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:11px}
+.chk{display:flex;gap:9px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.022);cursor:pointer}
+.chk input{width:17px;height:17px;accent-color:var(--ok);cursor:pointer}
+.chk span{font-weight:800;font-size:12.5px}
+.mt{margin-top:11px}
+.lbl{color:var(--mut);font-size:11px;font-weight:800;letter-spacing:.35px;text-transform:uppercase;display:block;margin-bottom:6px}
+textarea{width:100%;min-height:92px;resize:vertical;font-size:13.5px;line-height:1.5}
+.vword{display:inline-flex;gap:7px;align-items:center;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:700;cursor:pointer;user-select:none}
+.vword.hit{border-color:rgba(154,230,180,.6);background:rgba(154,230,180,.14)}
+.bar{height:9px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:8px 0 6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok))}
+.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(9,16,30,.9);border:1px solid var(--line);padding:10px 13px;border-radius:13px;font-size:12.5px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:99}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(-5px)}
+.hint{color:var(--mut);font-size:12px;font-weight:600}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 5px;font-size:11px}
+.vword.rev{border-style:dashed;border-color:rgba(251,191,36,.5)}
+.vword.rev:before{content:"↻ ";color:#fbbf24;font-weight:800}
+.vword.rev.late{border-color:rgba(248,113,113,.72);background:rgba(248,113,113,.10)}
+.vword.rev.late:before{content:"! ";color:#f87171}
+.vword.rev.late.hit{border-color:rgba(154,230,180,.6);background:rgba(154,230,180,.14)}
+.rgrp{margin-top:11px}
+.rrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.rgrp .lbl{margin-bottom:0}
+.flash{animation:fl 1.5s ease;border-radius:12px}
+@keyframes fl{0%,100%{background:transparent}20%,55%{background:rgba(251,191,36,.14)}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="top">
+<div>
+<h1>Тренажёр польского C1 — частотный курс</h1>
+<div class="sub" id="subline">Загрузка…</div>
+</div>
+<div class="acts">
+<div class="pill">Тексты: <b id="pTx">—</b></div>
+<div class="pill">Слова: <b id="pW">—</b></div>
+<div class="pill">Готово: <b id="pD">—</b></div>
+<button class="btn" id="expProg">Экспорт</button>
+<button class="btn" id="impProg">Импорт</button>
+<button class="btn d" id="reset">Сбросить прогресс</button>
+<input type="file" id="impFile" accept=".json,application/json" style="display:none"/>
+</div>
+</div></div></header>
+
+<div class="wrap"><div class="grid">
+<aside class="card">
+<div class="hd">Дни (Пн–Пт)</div>
+<div class="scroll"><div class="daylist" id="dayList"></div></div>
+</aside>
+<main class="card main">
+<div class="fbar">
+<input type="search" id="q" placeholder="Поиск: дата, тема, слово в тексте…"/>
+<select id="mSel"><option value="">Все месяцы</option></select>
+<select id="tSel"><option value="">Все темы</option></select>
+<select id="sSel"><option value="">Все статусы</option><option value="todo">Не выполнено</option><option value="done">Выполнено</option></select>
+<button class="btn sm" id="expAll">Развернуть всё</button>
+<button class="btn sm" id="colAll">Свернуть всё</button>
+<button class="btn sm" id="clrF">Сбросить фильтры</button>
+</div>
+<div class="chips" id="chips"></div>
+<div class="jump" style="margin-top:12px">
+<span class="hint">Быстрый переход:</span>
+<select id="jumpSel"></select>
+<button class="btn sm" id="prev">&larr; Назад</button>
+<button class="btn sm" id="next">Вперёд &rarr;</button>
+<button class="btn sm g" id="toTodo">К невыполненному</button>
+<button class="btn sm d" id="toWords">К словам повтора &uarr;</button>
+<button class="btn sm" id="toTop">В начало</button>
+<span class="hint">Показано <b id="cnt">0</b> из <b id="tot">0</b> • <kbd>Alt</kbd>+<kbd>&uarr;</kbd>/<kbd>&darr;</kbd></span>
+</div>
+<div id="wordsPanel" class="day" style="margin-bottom:12px">
+<button class="dhead" id="wpHead"><div>
+<div class="dtitle">Слова дня из частотного списка</div>
+<div class="dsub" id="wpSub">—</div>
+</div><span class="tag" id="wpTag">—</span></button>
+<div class="body" id="wpBody">
+<div class="bar"><i id="wpBar" style="width:0%"></i></div>
+<div class="hint" id="wpProg">—</div>
+<div id="wpWords" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:11px"></div>
+<div id="wpRevWrap" style="display:none;margin-top:11px"><span class="lbl">Интервальный повтор — 1, 3 и 7 дней; неотмеченное переносится на следующие дни</span><div id="wpRev" style="margin-top:4px"></div></div>
+<div class="acts2"><button class="btn sm g" id="wpMark">Отметить слова дня</button><button class="btn sm" id="wpClear">Снять отметки дня</button></div>
+<div class="mt">
+<span class="lbl">Загрузить свой частотный список (через запятую или пробел)</span>
+<textarea id="imp" placeholder="nie, to, się, na, co, że…"></textarea>
+<div class="acts2"><button class="btn sm p" id="impGo">Загрузить список</button><span class="hint">Заменяет банк и пересчитывает дневные порции.</span></div>
+</div>
+</div>
+</div>
+<div id="days"></div>
+</main>
+</div></div>
+<div class="toast" id="toast">Скопировано</div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- 1. ПЕРИОД И ДНИ ---------- */
+var START=[2026,9,14], END=[2027,3,12];
+var KEY="plC1freq.v1";
+function p2(n){return String(n).padStart(2,"0")}
+function fmt(d){return p2(d.getDate())+"."+p2(d.getMonth()+1)+"."+d.getFullYear()}
+function mk(a){return new Date(a[0],a[1]-1,a[2])}
+var DOW={0:"Воскресенье",1:"Понедельник",2:"Вторник",3:"Среда",4:"Четверг",5:"Пятница",6:"Суббота"};
+function days(){var o=[],c=mk(START),e=mk(END);while(c<=e){var w=c.getDay();if(w>=1&&w<=5)o.push(fmt(c));c.setDate(c.getDate()+1)}return o}
+var W=days(), N=W.length;
+if(!N){document.body.innerHTML='<div style="max-width:640px;margin:60px auto;padding:24px;font-family:sans-serif;color:#e9eefb">Ошибка курса: START позже END — дни не сгенерированы.</div>';return}
+
+/* ---------- 2. ЧАСТОТНЫЙ БАНК СЛОВ ---------- */
+var VOC=["ja ty on ona ono my wy oni one mnie ciebie jego jej nas was ich swoj siebie ktoś coś nikt nic wszystko wszyscy każdy żaden inny taki który jaki ten ta tamten sam sama samo także też jeszcze już teraz wtedy potem wcześniej później dziś wczoraj jutro zawsze nigdy często rzadko czasem zwykle ostatnio dawno wkrótce zaraz natychmiast powoli szybko wolno dobrze źle lepiej gorzej najlepiej najgorzej dużo mało więcej mniej bardzo całkiem zupełnie prawie tylko jedynie nawet przecież chyba pewnie oczywiście raczej właśnie tu tutaj gdzie gdzieś nigdzie wszędzie skąd dokąd kiedy dlaczego ponieważ bo więc dlatego żeby aby gdy gdyby jeżeli jeśli choć chociaż mimo jednak natomiast oraz albo lub ani czy iż no w we na nad pod przed za po do od ode z ze przez przy u ku między pomiędzy obok wśród bez dla dzięki przeciw około koło podczas wobec według zamiast oprócz wraz spośród ponad jeden dwa trzy cztery pięć sześć siedem osiem dziewięć dziesięć jedenaście dwanaście dwadzieścia trzydzieści czterdzieści pięćdziesiąt sto tysiąc milion pierwszy drugi trzeci czwarty piąty ostatni jedyny połowa część całość być jest są był była było byli będę będzie będą miał miała mieli mieć ma mają może mogą można trzeba musi muszę musisz musimy chcę chcesz chce chcemy chcą wiem wiesz wie wiedzą wiedzieć myślę myśli myśleć mówię mówi mówić powiedzieć powiedział powiedziała robię robi robić zrobić zrobił iść idzie szedł pójść przyjść przyjechać jechać jadę jeździć dać daje dostać dostał wziąć bierze brać patrzeć patrzy zobaczyć widzieć widzi słyszeć słyszy czuć czuje znać zna znał rozumieć rozumie rozumiał pytać pyta zapytać odpowiedzieć odpowiada powtarzać powtarza uczyć uczy nauczyć studiować pracować pracuje pracował mieszkać mieszka żyć żyje jeść je zjeść pić pije wypić spać śpi wstać wstaje siedzieć siedzi stać stoi leżeć leży biegać biega chodzić chodzi wracać wraca wrócić wyjść wychodzi wejść wchodzi zostać zostaje czekać czeka szukać szuka znaleźć znalazł kupić kupuje sprzedać sprzedaje płacić płaci zapłacić kosztować kosztuje liczyć liczy mierzyć mierzy budować buduje tworzyć tworzy zmieniać zmienia zmienić zaczynać zaczyna zacząć kończyć kończy skończyć pomagać pomaga pomóc dziękować dziękuje przepraszać przepraszam prosić prosi proszę kochać kocha lubić lubi bać boi martwić cieszyć śmiać śmieje płakać płacze krzyczeć krzyczy milczeć milczy słuchać słucha dzwonić dzwoni pisać pisze napisać czytać czyta przeczytać pokazywać pokazuje pokazać otworzyć otwiera zamknąć zamyka trzymać trzyma nosić nosi myć myje gotować gotuje piec piecze smażyć smaży sprzątać sprząta prać pierze prasować prasuje szyć szyje malować maluje rysować rysuje śpiewać śpiewa grać tańczyć tańczy żartować żartuje kłócić kłóci godzić zgadzać zgadza wątpić wątpi ufać ufa wierzyć wierzy wstydzić wstydzi dziwić dziwi nudzić nudzi bawić bawi odpoczywać odpoczywa relaksować podróżować podróżuje zwiedzać zwiedza zapraszać zaprasza odwiedzać odwiedza żegnać żegna witać wita składać składa życzyć życzy obiecywać obiecuje żałować żałuje narzekać narzeka chwalić chwali krytykować krytykuje oceniać ocenia porównywać porównuje wybierać wybiera decydować decyduje planować planuje przygotowywać przygotowuje organizować organizuje ustalać ustala sprawdzać sprawdza poprawiać poprawia psuć psuje naprawiać naprawia",/*@V1*/"człowiek ludzie osoba kobieta mężczyzna chłopiec dziewczyna dziecko dzieci rodzina rodzice matka ojciec mama tata syn córka brat siostra babcia dziadek wnuk wnuczka ciocia wujek kuzyn sąsiad przyjaciel przyjaciółka kolega koleżanka znajomy narzeczony narzeczona mąż żona partner partnerka małżeństwo związek miłość przyjaźń szacunek zaufanie wdzięczność radość smutek złość strach lęk gniew wstyd duma nadzieja rozpacz żal tęsknota samotność spokój cierpliwość odwaga mądrość głupota lenistwo pracowitość życzliwość uprzejmość szczerość kłamstwo prawda sekret tajemnica pamięć wspomnienie marzenie cel sens wiara sumienie charakter osobowość nastrój humor energia siła słabość zdrowie choroba ból głowa ręka noga oko ucho nos usta ząb włosy skóra serce żołądek plecy palec kolano ramię ciało krew oddech głos wzrok uśmiech łza pot sen zmęczenie głód pragnienie apetyt trawienie lekarz pielęgniarka szpital przychodnia apteka lekarstwo tabletka recepta zastrzyk badanie operacja przeziębienie gorączka kaszel katar grypa dentysta okulista alergia dieta witamina odporność rana opatrunek bandaże ból ząb masaż rehabilitacja szczepienie wizyta pacjent choroba objaw diagnoza leczenie zdrowienie opieka ratunek pomoc pogotowie karetka wypadek upadek bezpieczeństwo zagrożenie niebezpieczeństwo ryzyko ostrożność uwaga refleks nawyk przyzwyczajenie nałóg palenie alkohol papieros uzależnienie siła wola wytrwałość konsekwencja samodzielność niezależność wolność odpowiedzialność obowiązek powinność prawo zakaz nakaz pozwolenie zgoda odmowa wybór decyzja postanowienie wątpliwość pewność niepewność nadzieja rozczarowanie zawód sukces porażka wysiłek nagroda kara pochwała krytyka ocena opinia sąd zdanie pogląd przekonanie światopogląd wartości zasady normy moralność etyka uczciwość lojalność odwaga tchórzostwo ambicja pokora pycha skromność hojność chciwość zazdrość zawiść współczucie empatia troska opiekuńczość czułość serdeczność dystans nieufność zaufanie bliskość intymność przywiązanie tęsknota rozstanie pojednanie przebaczenie wina kara skrucha żal wdzięczność pamięć zapomnienie",/*@V2*/"praca pracodawca pracownik pracownica zespół firma spółka przedsiębiorstwo korporacja biuro biurowiec stanowisko obowiązek zadanie projekt wdrożenie proces procedura system narzędzie rozwiązanie strategia wynik efekt sukces porażka błąd ryzyko kontrola audyt raport analiza dane informacja dokument dokumentacja umowa kontrakt warunek negocjacje negocjować klient zlecenie zamówienie oferta cena koszt budżet faktura płatność wynagrodzenie pensja premia podwyżka benefit dodatek zysk strata inwestycja kredyt dług podatek księgowość rachunek bilans zarząd dyrektor kierownik menedżer przełożony podwładny współpracownik asystent sekretariat spotkanie narada rekrutacja selekcja kandydat aplikacja życiorys zatrudnienie zwolnienie odejście awans szkolenie kurs warsztat rozwój kompetencja umiejętność doświadczenie praktyka staż praktykant nadgodziny urlop świadczenie legalizacja pobyt wiza pozwolenie zezwolenie legalny nielegalny zgodność przepis regulamin polityka standard jakość efektywność wydajność automatyzacja digitalizacja oprogramowanie aplikacja internet sieć serwer baza hasło dostęp bezpieczeństwo poufność przetwarzanie ochrona zgoda obsługa satysfakcja reklamacja zwrot gwarancja marka reklama sprzedaż marketing rynek konkurencja współpraca partnerstwo udział akcja udziałowiec właściciel inwestor bank konto przelew gotówka karta moneta banknot podpis pieczątka formularz wniosek podanie zaświadczenie protokół notatka sprawozdanie zestawienie wykaz lista tabela arkusz kalkulacja budżetowanie planowanie kontrola nadzór koordynacja delegowanie odpowiedzialność rozliczenie wynik efektywność wskaźnik miernik cel zadanie termin deadline opóźnienie zaległość priorytet kolejność etap faza zamknięcie podsumowanie wnioski rekomendacja poprawa usprawnienie optymalizacja oszczędność redukcja wzrost spadek trend prognoza szacunek założenie hipoteza wniosek argument dowód przykład kontrargument dyskusja debata konsensus kompromis ustępstwo spór konflikt rozwiązanie mediacja arbitraż porozumienie ugoda układ współdziałanie zespół praca zdalna biuro hybrydowy elastyczny grafika obecność absencja rotacja fluktuacja zaangażowanie motywacja satysfakcja lojalność kultura organizacyjna wartości misja wizja strategia marka wizerunek reputacja zaufanie etyka compliance ryzyko audyt kontrola wewnętrzna procedura instrukcja wytyczne standard polityka regulamin szkolenie onboarding mentoring coaching feedback ocena okresowa cele rozwojowe ścieżka kariery sukcesja talent rezerwa kadrowa rekrutacja sourcing rekrutacja bezpośrednia ogłoszenie portal cv rozmowa rekrutacyjna testy assessment ośrodek kandydat oferta negocjacje wynagrodzenie benefity pakiet socjalny opieka medyczna karta sportowa ubezpieczenie emerytura urlop macierzyński ojcowski wychowawczy zwolnienie okres wypowiedzenie rozwiązanie umowy stała tymczasowa zlecenie dzieło b2b samozatrudnienie podwykonawca agencja outsourcing offshoring lista płac,budować,burzyć,chronić,ćwiczyć,dbać,decydować,dzielić,gotować,gromadzić,informować,inwestować,karać,kierować,komentować,komunikować,kontrolować,kopać,krzyczeć,kupować,liczyć,malować,marzyć,mierzyć,milczeć,narzekać,niszczyć,obiecywać,obniżać,obserwować,oczekiwać,odczuwać,odgadnąć,odnosić,odrabiać,odrzucać,odwołać,ogłaszać,ograniczać,omawiać,opisywać,organizować,osądzać,oszczędzać,oskarżać,planować,podejmować,podkreślać,podnosić,podpisywać,podróżować,pozwalać,pragnąć,proponować,protestować,próbować,przechowywać,przeciwdziałać,przejmować,przekazywać,przemawiać,przeprowadzać,przetwarzać,przyjmować,przypominać,przyznawać,publikować,pytać,realizować,reklamować,rozumieć,rysować,sądzić,składać,spotykać,sprawdzać,sprowadzać,sprzedawać,starać się,sumować,szanować,szkolić,tłumaczyć,towarzyszyć,tworzyć,ukrywać,unikać,ustalać,wprowadzać,wyrażać,wybaczać,wychowywać,wyjaśniać,wymagać,wynajmować,występować,wzmacniać,zadawać,zakładać,zamawiać,zamykać,zapisywać,zapominać,zapraszać,zarabiać,zastanawiać się,zbierać,zdobywać,zgadzać się,zwiększać,życzyć,adres,akcja,aktor,analiza,argument,artykuł,autor,badanie,bezpieczeństwo,biblioteka,biuro,błąd,bogactwo,bohater,branża,budynek,cel,ciekawość,ciśnienie,czasopismo,czystość,czytelnik,działanie,dane,decyzja,definicja,dokument,doświadczenie,ekspert,energia,fabryka,fakt,firma,forma,gazeta,grupa,historia,horyzont,hotel,idea,informacja,instrukcja,jakość,jednostka,kariera,kategoria,kierunek,kolekcja,komisja,koncepcja,kontakt,kontrakt,kontrola,konto,koszt,kraina,kredyt,kryzys,księga,kultura,kurs,kwestia,lekcja,liczba,lider,linia,lista,literatura,materiał,metoda,miara,minister,mieszkanie,młodzież,moment,muzeum,myśl,nadzieja,nauka,nieruchomość,norma,obszar,obywatel,oferta,okazja,opcja,opinia,organizacja,ośrodek,pamięć,parametr,partner,pasja,pensja,personel,plan,poczucie,podatek,podstawa,pojazd,polityka,pomysł,porada,potrzeba,powierzchnia,poziom,prawda,proces,program,projekt,propozycja,przepis,pytanie,rada,reguła,relacja,rezultat,rola,rozmiar,rozmowa,rynek,rząd,samochód,satysfakcja,sektor,seria,siła,sytuacja,światło,technologia,temat,teoria,termin,towarzystwo,treść,umiejętność,uwaga,wartość,warunek,wiedza,wniosek,wolność,wsparcie,wynik,wyobraźnia,wzór,zasada,zaufanie,zdanie,zdarzenie,zespół,zjawisko,znaczenie,związek,źródło,życie,ambitny,bezpieczny,bezpośredni,bogaty,ciekawy,cierpliwy,cichy,cudowny,delikatny,dokładny,dostępny,dumny,elastyczny,energiczny,głęboki,gorący,gotowy,sprawiedliwy,szczery,śmiały,świeży,tajemniczy,tani,twardy,uczciwy, uroczy,ustępliwy,wesoły,wierny,wprawny,wybitny,wygodny,wzruszający,zabawny,zadowolony,zależny,zamknięty,zdolny,zdrowy,zręczny,życzliwy,żwawy,blisko,chętnie,ciągle,coraz,dawno,dokładnie,dotąd,długo,głośno,głównie,jakoś,kiedyś,natychmiast,niedawno,obecnie,oczywiście,osobno,pewnie,poważnie,prawie,przede wszystkim,przecież,razem,rzadko,samodzielnie,szczególnie,szybko,wcześnie,wciąż,wreszcie,właściwie,wspólnie,zaledwie,zawsze,znów,zwykle kadry płace lista obecności ewidencja czas pracy nadgodziny rozliczenie",/*@V3*/"szkoła przedszkole uczeń uczennica student klasa lekcja zajęcia przedmiot matematyka polski historia geografia biologia chemia fizyka plastyka muzyka wychowanie egzamin sprawdzian kartkówka test ocena stopień świadectwo dziennik zeszyt podręcznik ćwiczenie lektura biblioteka nauczyciel wychowawca pedagog kuratorium wakacje ferie przerwa dzwonek tablica kreda długopis ołówek gumka plecak mundurek wiedza nauka uwaga koncentracja logika wyobraźnia kreatywność talent zdolność motywacja pochwała dom mieszkanie blok kamienica budynek piętro winda klatka schody drzwi okno ściana podłoga sufit dach balkon piwnica strych garaż ogród podwórko osiedle wieś miasto miasteczko ulica aleja plac rynek chodnik skrzyżowanie przystanek dworzec lotnisko pociąg autobus tramwaj samochód rower motocykl taksówka bilet rozkład droga trasa podróż wycieczka wyjazd powrót bagaż walizka mapa nawigacja kierowca pasażer benzyna paliwo stacja korek wypadek policja straż pogotowie czas godzina minuta sekunda dzień tydzień miesiąc rok poranek południe wieczór noc północ wschód zachód wiosna lato jesień zima pogoda słońce chmura deszcz śnieg wiatr mróz upał burza mgła tęcza temperatura niebo ziemia woda ogień powietrze las łąka pole rzeka jezioro morze góra wzgórze dolina wyspa kamień piasek drzewo liść kwiat trawa zwierzę ptak ryba pies kot koń krowa świnia kura owca mysz niedźwiedź wilk lis zając jeż motyl pszczoła mucha komar pająk kret żaba wąż sowa bocian jaskółka wróbel gołąb kaczka gęś indyk sarna jeleń dzik borsuk wydra wiewiórka chomik szczur nietoperz osa bąk mrówka świerszcz ślimak dżdżownica roślina drzewo sosna świerk brzoza dąb klon lipa wierzba kasztan jabłoń grusza śliwa wiśnia leszczyna malina jeżyna borówka poziomka stokrotka rumianek mak chaber dzwonek tulipan narcyz róża piwonia bez jaśmin liliowiec bratek fiołek konwalia krokus hiacynt georginia dalia mieczyk astra chryzantema pelargonia fuksja begonia paproć mech bluszcz tuja bukszpan trawnik rabata ogródek grządka szklarnia kompost nasiona sadzonka cebulka korzeń łodyga gałąź pąk owoc warzywo zboże pszenica żyto jęczmień owies kukurydza rzepak słonecznik len konopie chmiel",/*@V4*/"jedzenie posiłek śniadanie obiad kolacja przekąska danie potrawa zupa rosół barszcz żurek chłodnik kapuśniak krupnik grochówka flaki bigos golonka schab kotlet kiełbasa boczek słonina szynka pasztet galareta pieczeń gulasz potrawka klopsiki pierogi kluski kopytka łazanki makaron naleśniki placki racuchy bliny uszka krokiety zapiekanka ryba dorsz łosoś śledź karp sandacz szczupak makrela tuńczyk krewetki małże śmietana masło margaryna twaróg ser jogurt kefir maślanka jajko jajecznica omlet majonez musztarda ketchup ocet olej oliwa przyprawa sól pieprz papryka bazylia oregano tymianek koperek pietruszka szczypiorek majeranek kminek cynamon wanilia goździki imbir curry chili czosnek cebula por szczypior marchew seler burak rzodkiewka ogórek pomidor dynia cukinia bakłażan kapusta kalafior brokuł brukselka fasolka groch bób soczewica ziemniak ryż kasza gryka jagła płatki bułka chleb bagietka kajzerka rogalik ciasto ciastko piernik sernik makowiec szarlotka kompot kisiel budyń galaretka lody cukierki czekolada karmel wafle herbata kawa sok napój lemonada oranżada piwo wino wódka nalewka likier miód grzaniec targ targowanie zakupy sklep stoisko sprzedawca koszyk wózek kasa paragon rabat promocja cena towar jakość świeżość przydatność opakowanie słoik butelka puszka torba siatka przepis pieczenie smażenie duszenie grillowanie marynowanie siekanie krojenie obieranie zagniatanie wałkowanie dekorowanie przystawka deser stołówka restauracja kawiarnia bistro bufet kelner menu rachunek napiwek rezerwacja stolik atmosfera towarzystwo toast życzenia święto uroczystość imieniny urodziny wesele chrzciny Wigilia Wielkanoc Andrzejki Mikołajki dożynki festyn kiermasz jarmark koncert wystawa muzeum teatr kino opera galeria obraz rzeźba rzemiosło rękodzieło tradycja obyczaj zwyczaj przesąd legenda bajka przysłowie powiedzenie żart anegdota humor wspomnienie opowieść uzasadnienie wnioskowanie przesłanka uwarunkowanie zależność proporcja hierarchia kontekst perspektywa wymiar zakres kryterium mechanizm struktura tendencja dynamika równowaga ciągłość zmienność przemiana ewolucja reforma ustrój gospodarka przemysł rolnictwo handel usługa logistyka magazyn dostawa zaopatrzenie zapas transport komunikacja infrastruktura energetyka ekologia zanieczyszczenie klimat susza powódź huragan katastrofa klęska epidemia pandemia szczepionka diagnostyka profilaktyka depresja bezsenność społeczeństwo wspólnota pokolenie tożsamość dziedzictwo stereotyp uprzedzenie tolerancja nietolerancja równość nierówność dyskryminacja integracja migracja emigracja uchodźca imigrant większość mniejszość referendum wybory kampania mandat samorząd gmina powiat województwo urząd ministerstwo ustawa konstytucja prokurator adwokat wyrok apelacja skarga pozew paragraf klauzula zapis aneks audycja wywiad reportaż felieton komentarz redakcja wydawnictwo nakład subskrypcja abonament transmisja ekran klawiatura drukarka skaner plik folder edytor aktualizacja wirus algorytm robot dron satelita łącze router wzruszenie rozgoryczenie zniechęcenie determinacja upór wyrozumiałość obawa niepokój ulga optymizm pesymizm realizm idealizm sceptycyzm entuzjazm apatia obojętność uraza pretensja wyrzut medytacja refleksja kontemplacja intuicja świadomość podświadomość wyobrażenie pojęcie porządek nieporządek bałagan harmonia sprzeczność paradoks analogia metafora ironia sarkazm dowcip rozrywka wypoczynek hobby zainteresowanie żywioł krajobraz uzasadniać wnioskować dowodzić podważać kwestionować rozważać analizować interpretować definiować klasyfikować porządkować upraszczać komplikować uściślać podsumować streścić cytować argumentować polemizować dyskutować przekonywać namawiać odradzać sugerować akcentować zaprzeczać potwierdzać podejrzewać przewidywać prognozować uzasadniony wiarygodny rzetelny przejrzysty spójny logiczny konsekwentny sceptyczny optymistyczny pesymistyczny obojętny wyrozumiały samodzielny zaradny pracowity sumienny obowiązkowy punktualny systematyczny chaotyczny nieprzewidywalny uparty stanowczy opanowany wybuchowy wrażliwy troskliwy opiekuńczy hojny rzetelnie świadomie celowo przypadkowo stopniowo nieustannie systematycznie konsekwentnie zasadniczo teoretycznie praktycznie wnikliwie wyczerpująco zwięźle precyzyjnie ogólnie konkretnie szczerze"];
+var PHRASES="na zewnątrz|do woli|mieć nadzieję|w związku z tym|po prostu|na pewno|na przykład|w ogóle|na razie|w końcu|od razu|na temat|w sprawie|ze względu na|pod uwagę|na miejscu|do końca|w sumie|mimo że|dlatego że|jak gdyby|nie tylko|przede wszystkim|z jednej strony|z drugiej strony|w przeciwnym razie|na wszelki wypadek|bez wątpienia|w miarę|w porządku|w każdym razie|na ogół|w zasadzie|na zawsze|od czasu do czasu|na co dzień|co więcej|po pierwsze|po drugie|z czasem|w praktyce|na zmianę|w zamian|od nowa|co najmniej|na czas|pod kontrolą|na bieżąco|w skrócie|na koniec|z kolei|jak zwykle|w połowie|w tle|na głos|i tak dalej|mieć rację|mieć na myśli|mieć ochotę|mieć wrażenie|mieć dość|mieć zamiar|mieć czas|mieć wpływ|mieć znaczenie|brać udział|brać pod uwagę|zwracać uwagę|dawać sobie radę|do domu|w pracy|na studiach|w szkole|u lekarza|na zakupach|w kuchni|przy stole|na targu|do stołu|na zdrowie|do góry|na dole|w górę|zwolnienie lekarskie|dane osobowe|termin przydatności|umowa o pracę|rynek pracy|miejsce pracy|godziny pracy|kultura organizacyjna|ocena okresowa|rozwój zawodowy|ścieżka kariery|lista obecności|kontrola wewnętrzna|przetwarzanie danych|ochrona danych|Boże Narodzenie|Nowy Rok|Tłusty Czwartek|Wielki Post|pierwsza gwiazdka|barszcz czerwony|żurek staropolski|kwaśna śmietana|sól morska|brać odpowiedzialność|mieć wątpliwości|podjąć decyzję|wyciągnąć wnioski|postawić na swoim|mieć pretensje|iść na kompromis|trzymać się zasad|grać na zwłokę|mieć na oku|brać na siebie|zdać sobie sprawę|wyjść z założenia|mieć żal|robić wrażenie|przyjść do głowy|mieć przyjemność|być zdania|mieć na uwadze|brać się do pracy|mieć pod ręką|wyjść na jaw|mieć szczęście|mieć pecha|być w błędzie|nie mieć wyboru|kłaść nacisk|stracić cierpliwość|nabrać wprawy|dojść do wniosku|dotrzymać słowa|mieć do czynienia|pójść na ustępstwa|mieć szansę|mieć możliwość|brać czynny udział|mieć coś wspólnego|nie mieć nic przeciwko|mieć pod dostatkiem|mieć pewność|mieć w pamięci|brać przykład|być w kontakcie|mieć dostęp|mieć zaplecze|postawić sprawę jasno|nie mieć pojęcia|zdobyć zaufanie|stracić wątek|trzymać nerwy na wodzy|mieć wolne ręce|mieć czyste sumienie|być w dobrych rękach";
+function norm(s){return (s||"").toLowerCase().replace(/[^a-ząćęłńóśźż0-9\- ]+/g," ").replace(/\s+/g," ").trim()}
+function dedupe(a){var s=Object.create(null),o=[];for(var i=0;i<a.length;i++){var w=norm(a[i]);if(w&&w.length<40&&!s[w]){s[w]=1;o.push(w)}}return o}
+var BANK=[], GOAL=0;
+function setBank(){BANK=dedupe(VOC.join(" ").split(/[\s,;]+/).concat(PHRASES.split("|")));GOAL=BANK.length}
+setBank();
+
+/* ---------- 3. ТЕМЫ: 6 вступлений + 22 ядра + 6 концовок ---------- */
+var THEMES=[{id:"school",name:"Школа и обучение ребёнка",
+in:["Edukacja dziecka to proces, w którym szkoła i dom muszą działać w jednym rytmie.",
+"Warto pamiętać, że ocena w dzienniku nie opisuje całego potencjału ucznia.",
+"Rodzic, który rozumie zasady panujące w szkole, może znacznie więcej wnieść w naukę dziecka.",
+"Dobrze zaprojektowany plan nauki chroni dziecko przed chaosem, a rodzica przed poczuciem winy.",
+"Nauka w szkole przypomina raczej długi bieg niż serię krótkich sprintów.",
+"Zanim zapytamy dziecko o stopnie, warto zapytać, czego się dziś nauczyło."],
+co:["Nauczyciel nie jest w stanie prowadzić indywidualnego wsparcia, jeśli rodzic pojawia się w szkole tylko przy okazji problemów.",
+"Regularna rozmowa o tym, co sprawia dziecku trudność, pozwala wychwycić luki, zanim staną się nawykiem.",
+"Powtarzanie materiału małymi porcjami daje trwalszy efekt niż jednorazowy wysiłek przed sprawdzianem.",
+"Dziecko uczy się odpowiedzialności wtedy, gdy widzi, że jego decyzje mają realne konsekwencje.",
+"Nadmiar zajęć dodatkowych odbiera czas na sen, a bez snu uwaga spada szybciej, niż podpowiada intuicja.",
+"Nie każde niepowodzenie wymaga natychmiastowej interwencji; czasem potrzebny jest namysł i chwila spokoju.",
+"Warto ustalić z dzieckiem stałe miejsce i porę pracy, bo rytuał zastępuje siłę woli.",
+"Kiedy uczeń rozumie, po co się uczy, łatwiej znosi nudę powtarzania i niepotrzebny stres.",
+"Zeszyt prowadzony niestarannie zwykle zdradza bałagan w myśleniu, zanim pojawią się słabsze oceny.",
+"Pochwała za wysiłek działa inaczej niż pochwała za talent: pierwsza uczy wytrwałości, druga uzależnia od potwierdzenia.",
+"Dziecko, któremu wolno zadać pytanie, chętniej przyznaje się do tego, czego nie rozumie.",
+"Wspólne czytanie wieczorem buduje słownictwo i wyobraźnię, choć nie da się go zmierzyć oceną.",
+"Lekcje odrabiane w pośpiechu o późnej godzinie kosztują więcej niż rozłożone na dwa krótkie etapy.",
+"Szkoła oczekuje od rodzica obecności nie tylko na wywiadówkach, ale też w codziennej rozmowie o nauce.",
+"Porównywanie dziecka z rodzeństwem ani z kolegami nie motywuje, a jedynie uczy ukrywania własnych trudności.",
+"Nauczyciel bywa bezradny, gdy w domu nikt nie sprawdza, czy zadanie zostało naprawdę wykonane.",
+"Umiejętność planowania tygodnia przydaje się dziecku znacznie dłużej niż konkretny wzór z matematyki.",
+"Błędy popełniane na kartkówce są tańsze niż te same błędy na egzaminie końcowym.",
+"Gdy nauka kojarzy się wyłącznie z kontrolą, dziecko przestaje uczyć się dla siebie.",
+"Dobry nauczyciel nie walczy z telefonem, ale pokazuje, jak używać go rozsądnie.",
+"Warto pozwolić dziecku wybrać jedną dziedzinę, w której będzie mogło zabłysnąć przed klasą.",
+"Rodzic, który sam czyta, daje dziecku przykład mocniejszy niż jakiekolwiek polecenie."],
+en:["Dlatego lepiej ustalać priorytety wspólnie, zamiast narzucać gotowe rozwiązania.",
+"W praktyce liczy się konsekwencja, a nie liczba podjętych prób.",
+"Z czasem widać, że drobne zmiany przynoszą większy skutek niż radykalne reformy.",
+"Kiedy zasady są jasne od początku, dziecko chętniej bierze naukę za własną sprawę.",
+"Łatwo wtedy zauważyć, że spokój dorosłego bywa najlepszym narzędziem wychowawczym.",
+"Wystarczy kilka tygodni, aby dostrzec różnicę w nastawieniu dziecka."]},{id:"hr",name:"Клиент: аудит HR и автоматизация",
+in:["Audyt procesów HR zaczyna się od uczciwej odpowiedzi na pytanie, gdzie naprawdę tracimy czas.",
+"Klient oczekuje konkretu, dlatego rozmowę o podborze warto zaczynać od danych, a nie od wrażeń.",
+"Legalizacja zatrudnienia bywa najbardziej ryzykownym elementem projektu, jeśli dokumenty prowadzone są bez nadzoru.",
+"Automatyzacja rekrutacji nie naprawi procesu, w którym nikt nie potrafi opisać kryteriów wyboru.",
+"Dobry audyt nie kończy się raportem, lecz listą decyzji, które naprawdę da się wdrożyć.",
+"Rozmowa z klientem o procesach HR wymaga cierpliwości, bo dane zwykle nie zgadzają się z wrażeniami."],
+co:["Rzetelny opis stanowiska skraca czas selekcji i zmniejsza liczbę rozmów, które od początku nie mają sensu.",
+"Jeśli dane kandydatów zbierane są w kilku miejscach, ryzyko błędu i wycieku rośnie lawinowo.",
+"Metryki procesu, takie jak czas do zatrudnienia, koszt kontaktu i skuteczność źródła, trzeba mierzyć od pierwszego dnia.",
+"Automatyzacja porządkuje powtarzalne kroki, ale decyzje o ludziach nadal wymagają odpowiedzialnego osądu.",
+"W firmie, w której brakuje rzetelnej dokumentacji, każde odejście pracownika zamienia się w stratę wiedzy.",
+"Dobry system wspiera zespół, a zły system po prostu przenosi chaos w nowoczesne opakowanie.",
+"Legalizacja pobytu i pracy bywa odbierana jako formalność, dopóki kontrola nie ujawni zaległości.",
+"Odpowiedzialność za dokumenty powinna być przypisana do konkretnej osoby, inaczej nikt nie czuje się właścicielem procesu.",
+"Warto rozdzielić czynności, które można zautomatyzować, od tych, które wymagają rozmowy z człowiekiem.",
+"Kandydat oceniany według jasnych kryteriów rzadziej odchodzi po miesiącu pracy.",
+"Zbyt długie oczekiwanie na odpowiedź po rozmowie kosztuje firmę najlepszych specjalistów.",
+"Wdrożenie systemu bez szkolenia zespołu kończy się powrotem do arkuszy kalkulacyjnych.",
+"Audyt powinien odpowiedzieć nie tylko na pytanie, co działa źle, ale też na to, co warto zostawić bez zmian.",
+"Odejście pracownika z działu HR to dla firmy zarówno koszt, jak i sygnał ostrzegawczy.",
+"Jeśli proces rekrutacji trwa dłużej niż trzy tygodnie, kandydaci przestają traktować ofertę poważnie.",
+"Rozmowa kwalifikacyjna prowadzona bez przygotowania mówi więcej o rekruterze niż o kandydacie.",
+"Automatyczne potwierdzenia i przypomnienia zmniejszają liczbę nieobecności na spotkaniach.",
+"Każdy etap procesu powinien mieć właściciela i mierzalny wynik, inaczej rozmywa się odpowiedzialność.",
+"Dane osobowe pracowników wymagają dostępu ograniczonego wyłącznie do osób, które naprawdę go potrzebują.",
+"Klient kupuje nie narzędzie, ale spokój wynikający z uporządkowanego procesu.",
+"Warto liczyć koszt błędu w rekrutacji, bo zwykle jest on wielokrotnie wyższy niż koszt samego ogłoszenia.",
+"Dobre pytania podczas audytu odkrywają więcej niż najdokładniejsza lista kontrolna."],
+en:["Dlatego opłaca się zaczynać od mapy procesu, a nie od wdrożenia narzędzia.",
+"W praktyce wygrywa rozwiązanie proste, którego ludzie faktycznie chcą używać.",
+"Z czasem porządek w danych zwraca się w każdym kolejnym projekcie.",
+"Kiedy kryteria są mierzalne, rozmowa z klientem przestaje być walką o rację.",
+"Dopiero wtedy widać, ile czasu zespół tracił na czynności, których nikt nie potrzebował.",
+"Wystarczy jeden dobrze przeprowadzony audyt, aby zmienić sposób myślenia o procesach."]},{id:"child",name:"Взаимоотношения с ребёнком",
+in:["Relacja z dzieckiem zmienia się wraz z każdym etapem jego dorastania.",
+"Najtrudniejsze w rodzicielstwie bywa to, że nie da się zaplanować wszystkiego z góry.",
+"Dziecko potrzebuje nie tylko opieki, ale też kogoś, kto naprawdę słucha.",
+"Bliskość z dzieckiem buduje się codziennie, drobnymi gestami i wspólnym milczeniem.",
+"Wychowanie to sztuka wycofywania się we właściwym momencie.",
+"Zanim ocenimy zachowanie dziecka, warto zapytać, co się pod nim kryje."],
+co:["Krzyk bywa wygodny w chwili gniewu, ale nie uczy niczego poza lękiem.",
+"Emocje dziecka są prawdziwe, nawet jeśli ich powód wydaje się dorosłemu błahy.",
+"Granice stawiane z szacunkiem dają dziecku poczucie bezpieczeństwa, a nie krzywdy.",
+"Wspólny wieczór bez telefonu potrafi zdziałać więcej niż tygodnie dobrych rad.",
+"Dziecko, które czuje się wysłuchane, rzadziej sięga po kłamstwo.",
+"Zbyt wczesna samodzielność i zbyt długie wyręczanie to dwa bieguny tego samego błędu.",
+"Wstyd nie jest narzędziem wychowawczym, choć wielu dorosłych wciąż go tak używa.",
+"Rozczarowanie trzeba umieć przeżyć razem, a nie tłumić kolejnym prezentem.",
+"Rodzic ma prawo do zmęczenia, ale nie ma prawa do traktowania dziecka jak powiernika swoich spraw.",
+"Nastolatek odsuwa się po to, by sprawdzić, czy nadal jesteśmy w pobliżu.",
+"Pytanie otwarte zaprasza do rozmowy, a pytanie o stopnie zaprasza do milczenia.",
+"Konsekwencja bez czułości zamienia dom w koszary, a czułość bez zasad czyni go całkiem nieprzewidywalnym.",
+"Dziecko uczy się radzić sobie z porażką, patrząc na to, jak dorosły radzi sobie z własną.",
+"Obietnica złożona dla świętego spokoju podkopuje zaufanie skuteczniej niż uczciwa odmowa.",
+"Wspólne obowiązki domowe uczą odpowiedzialności lepiej niż kazanie wypowiedziane przy obiedzie.",
+"Czasem wystarczy zostać obok w ciszy, żeby dziecko odzyskało równowagę.",
+"Porównywanie z kuzynem lub kolegą zostawia ślad, który trudno później zatrzeć.",
+"Dziecko ma prawo do swojego zdania, choć nie zawsze do ostatniego słowa.",
+"Rozstanie rodziców da się przejść tak, by dziecko nie czuło się winne.",
+"Drobne rytuały są dla dziecka mapą, po której porusza się w nieznanym świecie.",
+"Zbyt surowe wymagania wobec chłopca bywają równie krzywdzące jak całkowity brak wymagań.",
+"Uznanie własnego błędu przed dzieckiem wzmacnia autorytet, a nie go podważa."],
+en:["Dlatego warto zaczynać od słuchania, a nie od pouczania.",
+"W praktyce ważniejsze od słów okazują się codzienne nawyki.",
+"Z czasem widać, że czułość i konsekwencja wcale się nie wykluczają.",
+"Kiedy dziecko czuje się bezpieczne, chętniej mówi o tym, co je naprawdę boli.",
+"Wystarczy kilka tygodni uwagi, by relacja nabrała innego tonu.",
+"Najwięcej daje obecność, której nie zastąpi żaden prezent."]},
+{id:"pair",name:"Взаимоотношения мужчины и женщины",
+in:["Bliskość między dwojgiem ludzi buduje się z rozmów, które nie zawsze są wygodne.",
+"Związek dojrzewa wtedy, gdy oboje przestają udawać, że nie potrzebują pomocy.",
+"Miłość nie znosi próżni – jeśli brakuje w niej uwagi, wypełnia ją milczenie.",
+"Trudno o trwałą relację tam, gdzie każde z partnerów prowadzi własną listę żalów.",
+"Wspólne życie przypomina raczej negocjacje niż jednorazowe wyznanie.",
+"Pierwsze miesiące łatwo pomylić z prawdziwą bliskością."],
+co:["Zamiast zgadywać, co druga osoba myśli, lepiej po prostu zapytać.",
+"Kłótnia prowadzona o zwycięstwo kończy się przegraną obojga.",
+"Podział obowiązków warto ustalać na chłodno, a nie w środku sprzeczki.",
+"Zazdrość bez podstaw bywa zaproszeniem do tego, czego najbardziej się obawiamy.",
+"Wspólne pieniądze wymagają jasnych zasad, jeśli mają uniknąć nieporozumień.",
+"Czas spędzany osobno nie jest zdradą bliskości, o ile oboje rozumieją jego sens.",
+"Przeprosiny bez zmiany zachowania są jedynie odroczeniem konfliktu.",
+"Czułość po latach bywa bardziej wymagająca niż na początku znajomości.",
+"Rodzina partnera to część pakietu, którego nie da się wybrać selektywnie.",
+"Milczenie w odpowiedzi na pytanie mówi zwykle więcej niż wymówka.",
+"Związek na odległość trzyma się na rytuałach, a nie na spontaniczności.",
+"Warto mówić o potrzebach, zanim zamienią się w ciche pretensje.",
+"Dzieci przyjmują na siebie to, czego dorośli nie potrafią między sobą rozstrzygnąć.",
+"Duma bywa droższa niż kilka minut szczerej rozmowy.",
+"Komplement wypowiedziany po tygodniach milczenia nie zawsze nadąża za potrzebą.",
+"Decyzja o wspólnym mieszkaniu to test praktyczny, a nie romantyczne zwieńczenie.",
+"Bez wspólnych planów związek dryfuje, choćby oboje byli bardzo zajęci pracą.",
+"Zrozumienie różnicy w tempie, w jakim oboje okazują uczucia, ratuje niejedną relację.",
+"Rozstanie bywa uczciwsze niż trwanie z litości.",
+"Wzajemny szacunek objawia się także w tym, jak mówi się o partnerze przy znajomych.",
+"Porównywanie z poprzednim partnerem nie prowadzi do niczego dobrego.",
+"Wierność to nie tylko brak zdrady, ale też obecność myślami tam, gdzie jest się ciałem."],
+en:["Dlatego lepiej zadawać pytania niż domyślać się odpowiedzi.",
+"W praktyce wygrywa para, która umie rozmawiać także o rzeczach trudnych.",
+"Z czasem okazuje się, że bliskość to codzienna praca, a nie stan dany raz na zawsze.",
+"Kiedy oboje mówią otwarcie, większość konfliktów traci na ostrości.",
+"Wystarczy jedno szczere wieczorne spotkanie, aby odmienić atmosferę w domu.",
+"Trwałość buduje się z drobnych gestów powtarzanych przez lata."]},
+{id:"food",name:"Кухня, стол и гостеприимство",
+in:["W polskim domu kuchnia jest zwykle miejscem, w którym toczą się najważniejsze rozmowy.",
+"Gość, którego sadza się przy stole, dostaje coś więcej niż posiłek.",
+"Dobry obiad zaczyna się nie w kuchni, ale na targu.",
+"Nic tak nie zbliża ludzi jak wspólne gotowanie po długim dniu.",
+"Kuchnia bywa najlepszym świadectwem tego, jak ludzie żyli na co dzień.",
+"Zanim poda się danie, trzeba pomyśleć o tym, kto i z kim będzie siedział przy stole."],
+co:["Rosół, który stał na ogniu od rana, smakuje zupełnie inaczej niż ten z puszki.",
+"Świeże zioła zmieniają prostą potrawę nie do poznania.",
+"Ciasto drożdżowe pachnie tak, że trudno mu się oprzeć.",
+"Zapach czosnku rozchodzi się po całym mieszkaniu, zanim zdążymy cokolwiek powiedzieć.",
+"Zakwas, ogórki i kapusta to dowód, że w prostocie tkwi prawdziwa kuchnia.",
+"Nie da się ugotować dobrej zupy bez cierpliwości i dbałości o szczegóły.",
+"W niektórych domach podaje się dwie zupy, bo jedna nigdy nie wystarcza gościom.",
+"Śledzie przyrządza się na wiele sposobów, zależnie od tego, kto przyjdzie do stołu.",
+"Pieczeń wymaga czasu, a czasu w kuchni nie da się niczym zastąpić.",
+"Pierogi lepione wspólnie przez całą rodzinę smakują lepiej niż kupione w sklepie.",
+"Podczas świąt stół ugina się od potraw, choć nikt nie jest w stanie zjeść wszystkiego.",
+"Zaproszenie na kawę często zamienia się w dwugodzinną rozmowę.",
+"Targi o wczesnej porze nagradzają tego, kto wstaje pierwszy.",
+"Smażone grzyby z jajkiem to danie, które pamięta się przez lata.",
+"Wielkanocne babki i mazurki wymagają precyzji bardziej niż odwagi.",
+"Domowy chleb wcale nie potrzebuje wielu składników, żeby zachwycić.",
+"Do stołu siada się razem, a nie wtedy, gdy ktoś skończy swoje zajęcia.",
+"Cenę wina łatwiej wybaczyć, jeśli towarzystwo naprawdę dopisuje.",
+"Kieliszek nalewki podany zimą bywa lepszy niż najdroższy deser.",
+"Kuchnia regionalna różni się tak bardzo, że mapa smaków zmienia się co kilka godzin drogi.",
+"Warto zostawić miejsce na deser, bo odmowa bywa odbierana jako brak zaufania.",
+"Gość, któremu pozwolono pomóc w kuchni, czuje się u siebie."],
+en:["Dlatego zaproszenie do stołu bywa zaproszeniem do szczerej rozmowy.",
+"W praktyce najlepiej smakuje to, co przygotowane bez pośpiechu.",
+"Z czasem okazuje się, że przepisy pamięta się przez ludzi, którzy je gotowali.",
+"Kiedy przy stole panuje swoboda, nawet najprostsze danie urasta do rangi święta.",
+"Wystarczy kilka dobrych składników, aby wieczór zamienił się we wspomnienie.",
+"Najważniejsze nie jest menu, lecz to, kto siedzi naprzeciwko."]}];
+
+/* ---------- 4. ГЕНЕРАТОР ТЕКСТОВ ДНЯ ---------- */
+/* Текст дня = вступление + 3 разных ядра + концовка (5 предложений). */
+/* Ни один текст и ни одна тройка ядер внутри темы не повторяются. */
+var DAYS=(function(){
+ var used=Object.create(null),tri=Object.create(null),out=[];
+ for(var i=0;i<N;i++){
+  var th=THEMES[i%THEMES.length], j=Math.floor(i/THEMES.length);
+  var Ai=th.in.length,Bi=th.co.length,En=th.en.length,total=Ai*Bi*Bi*Bi*En;
+  var start=((i*7)+(j*13))%total,pick="";
+  for(var pass=0;pass<2&&!pick;pass++){
+   for(var k=0;k<total;k++){
+    var n=(start+k)%total,x=n,a=0,b=0,c=0,d=0,e=0;
+    a=x%Ai;x=Math.floor(x/Ai);
+    b=x%Bi;x=Math.floor(x/Bi);
+    c=x%Bi;x=Math.floor(x/Bi);
+    d=x%Bi;x=Math.floor(x/Bi);
+    e=x%En;
+    if(b===c||b===d||c===d)continue;
+    var cand=th.in[a]+"\n"+th.co[b]+"\n"+th.co[c]+"\n"+th.co[d]+"\n"+th.en[e];
+    var ck=th.id+"|"+cand, tk=th.id+"|"+b+"_"+c+"_"+d;
+    if(used[ck])continue;
+    if(pass===0&&tri[tk])continue;
+    used[ck]=1;tri[tk]=1;pick=cand;break;
+   }
+  }
+  if(pick)out.push({date:W[i],theme:th.id,tname:th.name,text:pick});
+ }
+ return out;
+})();
+var uq=0; (function(){var s=Object.create(null);DAYS.forEach(function(d){if(!s[d.text]){s[d.text]=1;uq++}})})();
+
+/* ---------- 5. СОСТОЯНИЕ ---------- */
+function blank(){return{by:{},w:{},r:{},imp:null}}
+function load(){try{var r=localStorage.getItem(KEY);if(!r)return blank();var o=JSON.parse(r);if(!o||typeof o!=="object")return blank();o.by=o.by||{};o.w=o.w||{};o.r=o.r||{};o.imp=o.imp||null;return o}catch(e){return blank()}}
+var storageOk=true;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(storageOk){storageOk=false;show("Прогресс не сохраняется (приватный режим или ограничение хоста) — используйте Экспорт")}}}
+/* Импорт состояния из файла: валидация, восстановление банка, перерисовка */
+function applyState(o){
+ if(o&&o.app===KEY&&o.state&&typeof o.state==="object")o=o.state;
+ if(!o||typeof o!=="object"||Array.isArray(o)||!(o.by||o.w||o.r||o.imp)){show("Это не файл прогресса этого тренажёра");return}
+ o.by=o.by||{};o.w=o.w||{};o.r=o.r||{};o.imp=o.imp||null;
+ S=o;save();
+ if(S.imp&&S.imp.length){var b=dedupe(S.imp);if(b.length>50){BANK=b;GOAL=b.length}else setBank()}else setBank();
+ rebank();
+ cur=(S.last&&W.indexOf(S.last)>-1)?S.last:W[0];
+ updateHeader();prog();renderList();render();open(cur,false);
+ show("Прогресс импортирован")}
+var S=load();
+try{localStorage.setItem(KEY+".probe","1");localStorage.removeItem(KEY+".probe")}catch(e){storageOk=false}
+/* Банк раскладывается по дням без повторов: у каждого слова свой день введения. */
+var DAYW=[],PBASE=0,PREM=0;
+var OFF=[1,3,7],MAXDEBT=40;
+function plan(){DAYW=[];var idx=0;
+ for(var i=0;i<N;i++){DAYW[i]=[];var c=PBASE+(i<PREM?1:0);
+  for(var k=0;k<c;k++){DAYW[i].push(BANK[idx]);idx++}}}
+function rebank(){PBASE=Math.floor(BANK.length/N);PREM=BANK.length%N;plan()}
+if(S.imp&&S.imp.length){var b=dedupe(S.imp);if(b.length>50){BANK=b;GOAL=b.length}}
+rebank();
+function ent(d){if(!S.by[d])S.by[d]={ok:false,notes:""};return S.by[d]}
+function wordsOf(i){return (DAYW[i]||[]).map(function(w){return {w:w,id:w}})}
+/* Интервальный повтор: слово возвращается через 1, 3 и 7 дней после введения. */
+/* Интервалы: 1, 3 и 7 дней. Не отмеченный повтор переносится на следующий день, пока его не закроют. */
+function revId(id,g){return id+"~"+g}
+function reviewOf(i){var today=[],late=[];
+ for(var g=0;g<OFF.length;g++){
+  var due=i-OFF[g];if(due<0)continue;
+  var arr=DAYW[due]||[];
+  for(var k=0;k<arr.length;k++){var id=arr[k];today.push({id:id,gap:OFF[g],hit:!!S.r[revId(id,OFF[g])]})}
+  for(var src=0;src<due;src++){
+   var a2=DAYW[src];if(!a2)continue;
+   for(var k2=0;k2<a2.length;k2++){var id2=a2[k2];
+    if(S.r[revId(id2,OFF[g])])continue;
+    late.push({id:id2,gap:OFF[g],due:src+OFF[g]})}}
+ }
+ late.sort(function(a,b){return a.due-b.due||(a.id<b.id?-1:1)});
+ var shown=late.slice(0,MAXDEBT),groups=[],map=Object.create(null);
+ today.forEach(function(o){if(!map[o.gap]){map[o.gap]={gap:o.gap,items:[]};groups.push(map[o.gap])}map[o.gap].items.push(o)});
+ groups.sort(function(a,b){return a.gap-b.gap});
+ return {groups:groups,today:today,debts:late,shown:shown}}
+function learned(){var n=0;for(var k in S.w){if(S.w[k])n++}return n}
+function learnedRev(){var n=0;for(var k in S.r){if(!S.r[k])continue;var g=parseInt(String(k).split("~")[1],10);if(OFF.indexOf(g)>-1)n++}return n}
+
+/* ---------- 6. DOM ---------- */
+var $=function(id){return document.getElementById(id)};
+var list=$("dayList"),box=$("days"),toast=$("toast"),cur="";
+var F={q:"",m:"",t:"",s:"",dow:{}}, FKEY={1:"Пн",2:"Вт",3:"Ср",4:"Чт",5:"Пт"};
+function show(t){toast.textContent=t;toast.classList.add("on");clearTimeout(show._t);show._t=setTimeout(function(){toast.classList.remove("on")},1600)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function dowOf(d){var p=d.split(".").map(Number);return new Date(p[2],p[1]-1,p[0]).getDay()}
+function monOf(d){return d.slice(3)}
+function weekIdx(i){return Math.floor(i/5)+1}
+function key(d){return "day-"+d.replace(/\./g,"")}
+function updateHeader(){var p=fmt(mk(START))+" — "+fmt(mk(END));
+ $("subline").textContent=p+" • "+N+" занятий • только Пн–Пт • "+THEMES.length+" тем • банк слов: "+GOAL;
+ document.title="Тренажёр польского C1 — частотный курс ("+p+")"}
+function resetFilters(){F={q:"",m:"",t:"",s:"",dow:{}};$("q").value="";$("mSel").value="";$("tSel").value="";$("sSel").value="";
+ document.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on")})}
+function prog(){var n=0;DAYS.forEach(function(d){if(S.by[d.date]&&S.by[d.date].ok)n++});
+ $("pTx").textContent=uq+" из "+N;$("pW").textContent=learned()+" из "+GOAL;$("pD").textContent=n+" из "+N}
+function pass(d){if(F.q){var h=(d.date+" "+d.tname+" "+d.text).toLowerCase();if(h.indexOf(F.q.toLowerCase())<0)return false}
+ if(F.m&&monOf(d.date)!==F.m)return false;
+ if(F.t&&d.theme!==F.t)return false;
+ var e=S.by[d.date]||{};
+ if(F.s==="todo"&&e.ok)return false;
+ if(F.s==="done"&&!e.ok)return false;
+ var dw=dowOf(d.date);if(Object.keys(F.dow).length&&!F.dow[dw])return false;
+ return true}
+function renderList(){list.innerHTML="";
+ DAYS.forEach(function(d){var b=document.createElement("button");
+  b.className="dbtn"+(d.date===cur?" on":"")+((S.by[d.date]&&S.by[d.date].ok)?" ok":"");
+  b.innerHTML='<div><div class="dd">'+d.date+'</div><div class="dm">'+DOW[dowOf(d.date)]+' • '+esc(d.tname)+'</div></div>';
+  b.onclick=function(){open(d.date,true)};list.appendChild(b)})}
+function render(){var vis=[],html="",lastW=0;
+ DAYS.forEach(function(d){if(pass(d))vis.push(d)});
+ $("cnt").textContent=vis.length;$("tot").textContent=N;
+ vis.forEach(function(d){var i=W.indexOf(d.date),w=weekIdx(i),e=ent(d.date);
+  if(w!==lastW){lastW=w;html+='<div class="wk">Неделя '+w+'</div>'}
+  html+='<div class="day'+(d.date===cur?" on":"")+'" id="'+key(d.date)+'">'+
+   '<button class="dhead"><div><div class="dtitle">'+d.date+' • '+DOW[dowOf(d.date)]+'</div>'+
+   '<div class="dsub">'+esc(d.tname)+'</div></div><span class="tag">'+(e.ok?"готово":"не отмечено")+'</span></button>'+
+   '<div class="body">'+
+   '<div class="task"><b>15 минут письма:</b> перепишите текст дня.<br/><b>15 минут речи:</b> прочитайте вслух переписанный текст.</div>'+
+   '<p class="pl">'+esc(d.text)+'</p>'+
+   '<div class="acts2"><button class="btn sm p" data-copy="'+d.date+'">Скопировать текст</button>'+
+   '<button class="btn sm d" data-rev="'+d.date+'">К словам повтора \u2191</button>'+
+   '<label class="chk"><input type="checkbox" data-ok="'+d.date+'"'+(e.ok?" checked":"")+'/><span>Готово</span></label></div>'+
+   '<div class="mt"><span class="lbl">Заметки</span><textarea data-nt="'+d.date+'" placeholder="Что получилось, что повторить…">'+esc(e.notes||"")+'</textarea></div>'+
+   '</div></div>';
+ });
+ box.innerHTML=html}
+function open(date,scroll){
+ cur=date;S.last=date;save();
+ var el=$(key(date));
+ if(!el){resetFilters();render();el=$(key(date));show("Фильтры сброшены, чтобы показать "+date)}
+ box.querySelectorAll(".day").forEach(function(x){x.classList.remove("on")});
+ if(el){el.classList.add("on");if(scroll)el.scrollIntoView({behavior:"smooth",block:"start"})}
+ renderList();renderWords(date)}
+function copy(date){var d=DAYS.filter(function(x){return x.date===date})[0];if(!d)return;var t=d.text;
+ function fb(){var a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.left="-9999px";
+  document.body.appendChild(a);a.select();try{document.execCommand("copy");show("Текст скопирован")}catch(e){show("Не удалось скопировать")}document.body.removeChild(a)}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){show("Текст скопирован")},fb)}else fb()}
+function renderWords(date){var i=W.indexOf(date);if(i<0)i=0;var ws=wordsOf(i),hit=0,html="";
+ ws.forEach(function(o){var on=!!S.w[o.id];if(on)hit++;
+  html+='<span class="vword'+(on?" hit":"")+'" data-w="'+esc(o.id)+'" data-k="new">'+esc(o.w)+'</span>'});
+ $("wpWords").innerHTML=html;
+ var rv=reviewOf(i),rh="",rtot=0,rdone=0;
+ rv.groups.forEach(function(g){var ih="";
+  g.items.forEach(function(o){rtot++;if(o.hit)rdone++;
+   ih+='<span class="vword rev'+(o.hit?" hit":"")+'" data-w="'+esc(o.id)+'" data-k="rev" data-g="'+g.gap+'">'+esc(o.id)+'</span>'});
+  var lb=g.gap===1?"день":(g.gap<5?"дня":"дней");
+  rh+='<div class="rgrp"><span class="lbl">Через '+g.gap+' '+lb+' после введения — по графику на '+date+'</span><div class="rrow">'+ih+'</div></div>'});
+ var dbh="";
+ rv.shown.forEach(function(o){rtot++;
+  dbh+='<span class="vword rev late" data-w="'+esc(o.id)+'" data-k="rev" data-g="'+o.gap+'">'+esc(o.id)+'</span>'});
+ if(rv.debts.length){
+  rh+='<div class="rgrp" style="margin-top:10px"><span class="lbl" style="color:#f8b4b4">Долги — не отмечено раньше: '+rv.debts.length+(rv.debts.length>rv.shown.length?' (показаны '+rv.shown.length+' самых старых)':'')+'</span><div class="rrow">'+dbh+'</div></div>'}
+ $("wpRev").innerHTML=rh;
+ $("wpRevWrap").style.display=rtot?"block":"none";
+ $("wpSub").textContent=date+" • День "+(i+1)+" из "+N+" • новых "+ws.length+(rtot?", на повтор "+rtot:"");
+ $("wpTag").textContent="Новые: "+ws.length+(rtot?" • повтор: "+rtot:"");
+ $("wpProg").textContent="Новые слова: "+hit+" из "+ws.length+(rtot?" • повтор: "+rdone+" из "+rtot:"")+" • всего освоено "+learned()+" из "+GOAL+" • повторов закрыто "+learnedRev();
+ $("wpBar").style.width=(GOAL?learned()/GOAL*100:0).toFixed(2)+"%"}
+function toggleWord(id,kind,gap){if(kind==="rev"){var k=revId(id,gap);S.r[k]=!S.r[k]}else{S.w[id]=!S.w[id]}save();prog();renderWords(cur)}
+
+/* ---------- 7. СОБЫТИЯ ---------- */
+box.addEventListener("click",function(ev){var t=ev.target;
+ var dc=t.getAttribute&&t.getAttribute("data-copy");if(dc){copy(dc);return}
+ var rv=t.getAttribute&&t.getAttribute("data-rev");if(rv){goRev(rv);return}
+ var hd=t.closest?t.closest(".dhead"):null;
+ if(hd){var dt=hd.parentNode.querySelector(".dtitle").textContent.split(" • ")[0];open(dt,false)}});
+box.addEventListener("change",function(ev){var t=ev.target,ok=t.getAttribute("data-ok");
+ if(ok){ent(ok).ok=t.checked;save();prog();renderList();var e=$(key(ok));if(e)e.classList.add("on");var tg=e?e.querySelector(".tag"):null;if(tg)tg.textContent=t.checked?"готово":"не отмечено"}});
+box.addEventListener("input",function(ev){var t=ev.target,nt=t.getAttribute("data-nt");
+ if(nt){clearTimeout(window._nt);var v=t.value;window._nt=setTimeout(function(){ent(nt).notes=v;save()},340)}});
+$("wpBody").addEventListener("click",function(ev){var t=ev.target,w=t.getAttribute&&t.getAttribute("data-w");if(!w)return;toggleWord(w,t.getAttribute("data-k")||"new",t.getAttribute("data-g")||"")});
+$("wpMark").onclick=function(){var i=W.indexOf(cur);if(i<0)i=0;
+ wordsOf(i).forEach(function(o){S.w[o.id]=true});
+ var rv=reviewOf(i);
+ rv.today.forEach(function(o){S.r[revId(o.id,o.gap)]=true});
+ rv.shown.forEach(function(o){S.r[revId(o.id,o.gap)]=true});
+ save();prog();renderWords(cur);show("Отмечены слова дня и повторы")};
+$("wpClear").onclick=function(){var i=W.indexOf(cur);if(i<0)i=0;
+ wordsOf(i).forEach(function(o){delete S.w[o.id]});
+ var rv=reviewOf(i);
+ rv.today.forEach(function(o){delete S.r[revId(o.id,o.gap)]});
+ save();prog();renderWords(cur);show("Сняты отметки дня и повторов")};
+$("wpHead").onclick=function(){$("wpBody").style.display=($("wpBody").style.display==="block")?"none":"block"};
+$("q").addEventListener("input",function(){F.q=this.value;render()});
+$("mSel").onchange=function(){F.m=this.value;render()};
+$("tSel").onchange=function(){F.t=this.value;render()};
+$("sSel").onchange=function(){F.s=this.value;render()};
+$("expAll").onclick=function(){box.querySelectorAll(".day").forEach(function(d){d.classList.add("on")})};
+$("colAll").onclick=function(){box.querySelectorAll(".day").forEach(function(d){d.classList.remove("on")})};
+$("clrF").onclick=function(){resetFilters();render()};
+$("jumpSel").onchange=function(){open(this.value,true)};
+$("prev").onclick=function(){var i=W.indexOf(cur);if(i>0)open(W[i-1],true);else show("Это первый день")};
+$("next").onclick=function(){var i=W.indexOf(cur);if(i>-1&&i<W.length-1)open(W[i+1],true);else show("Это последний день")};
+$("toTodo").onclick=function(){for(var i=0;i<W.length;i++){if(!(S.by[W[i]]&&S.by[W[i]].ok)){open(W[i],true);return}}show("Все дни отмечены")};
+$("toTop").onclick=function(){window.scrollTo({top:0,behavior:"smooth"})};
+function goRev(date){var i=W.indexOf(date||cur);if(i<0)i=0;
+ if(date&&date!==cur)open(date,false);
+ var p=$("wordsPanel"),b=$("wpBody");if(!p)return;
+ if(b.style.display==="none")b.style.display="block";
+ p.scrollIntoView({behavior:"smooth",block:"start"});
+ var rv=reviewOf(i);
+ if(rv.groups.length||rv.shown.length){var r=$("wpRevWrap");r.classList.remove("flash");void r.offsetWidth;r.classList.add("flash")}
+ else show("На этот день повторов нет")}
+$("toWords").onclick=function(){goRev(cur)};
+$("reset").onclick=function(){if(!confirm("Сбросить прогресс, заметки и отметки слов?"))return;
+ try{localStorage.removeItem(KEY)}catch(e){}S=blank();setBank();rebank();prog();render();cur=W[0];open(cur,false);renderList();show("Прогресс сброшен")};
+/* Экспорт/импорт прогресса: переносят состояние между локальным файлом и хостом */
+$("expProg").onclick=function(){
+ try{var data=JSON.stringify({app:KEY,exported:new Date().toISOString(),state:S},null,1);
+  var blob=new Blob([data],{type:"application/json"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="plC1-progress-"+fmt(new Date()).replace(/\./g,"-")+".json";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
+  show("Прогресс выгружен в файл")}
+ catch(e){show("Не удалось выгрузить прогресс")}};
+$("impProg").onclick=function(){$("impFile").click()};
+$("impFile").addEventListener("change",function(){
+ var f=this.files&&this.files[0];this.value="";if(!f)return;
+ var rd=new FileReader();
+ rd.onload=function(){var o;
+  try{o=JSON.parse(rd.result)}catch(e){show("Файл повреждён или не JSON");return}
+  applyState(o)};
+ rd.onerror=function(){show("Не удалось прочитать файл")};
+ rd.readAsText(f,"utf-8")});
+$("impGo").onclick=function(){var v=$("imp").value;if(!v.trim())return;
+ var b=dedupe(v.split(/[|,;\n\r]+/));if(b.length<50)b=dedupe(v.split(/[\s,;]+/));if(b.length<50){show("Слишком короткий список (нужно 50+ слов)");return}
+ S.imp=b;save();BANK=b;GOAL=b.length;rebank();prog();renderWords(cur);show("Список загружен: "+GOAL+" слов, по "+PBASE+(PREM?"–"+(PBASE+1):"")+" в день")};
+document.addEventListener("keydown",function(e){if(!e.altKey)return;var i=W.indexOf(cur);
+ if(e.key==="ArrowDown"&&i<W.length-1){e.preventDefault();open(W[i+1],true)}
+ if(e.key==="ArrowUp"&&i>0){e.preventDefault();open(W[i-1],true)}});
+
+/* ---------- 8. ИНИЦИАЛИЗАЦИЯ ---------- */
+(function(){
+ var ms=[];DAYS.forEach(function(d){if(ms.indexOf(monOf(d.date))<0)ms.push(monOf(d.date))});
+ $("mSel").innerHTML='<option value="">Все месяцы</option>'+ms.map(function(m){return'<option value="'+m+'">'+m+'</option>'}).join("");
+ $("tSel").innerHTML='<option value="">Все темы</option>'+THEMES.map(function(t){return'<option value="'+t.id+'">'+esc(t.name)+'</option>'}).join("");
+ $("jumpSel").innerHTML=DAYS.map(function(d){return'<option value="'+d.date+'">'+d.date+' • '+DOW[dowOf(d.date)]+'</option>'}).join("");
+ $("chips").innerHTML=Object.keys(FKEY).map(function(k){return'<span class="chip" data-dow="'+k+'">'+FKEY[k]+'</span>'}).join("")+'<span class="hint" style="margin-left:6px">фильтр по дню недели</span>';
+ $("chips").addEventListener("click",function(e){var k=e.target.getAttribute&&e.target.getAttribute("data-dow");if(!k)return;
+  if(F.dow[k]){delete F.dow[k];e.target.classList.remove("on")}else{F.dow[k]=1;e.target.classList.add("on")}render()});
+ $("wpBody").style.display="block";
+ updateHeader();
+ if(!storageOk)show("Локальное хранилище недоступно — прогресс не сохраняется. Используйте Экспорт/Импорт");
+ $("wpSub").textContent="День 1 из "+N+" • банк слов: "+GOAL+" • новых по "+PBASE+(PREM?"–"+(PBASE+1):"")+" в день";
+ cur=(S.last&&W.indexOf(S.last)>-1)?S.last:W[0];
+ prog();renderList();render();open(cur,false);
+})();
+})();
+</script>
+<script>(function(){
+/* Мост для встраивания (например, Sider): работает только внутри iframe */
+if(window.parent===window)return;
+try{
+window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});}catch(e){}}
+})();
+</script></body>
+</html>
